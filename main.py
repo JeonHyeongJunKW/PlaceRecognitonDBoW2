@@ -2,6 +2,8 @@ from PyQt5.QtWidgets import *
 from PyQt5 import uic
 from PyQt5.QtGui import *
 from PyQt5.QtCore import Qt
+from PyQt5.QtCore import QTimer
+from PyQt5 import QtCore
 import sys
 import os
 import ctypes
@@ -13,18 +15,24 @@ class WindowClass(QMainWindow, form_class):
         self.setupUi(self)
         lib_path = "./dll/libhj_placeDBow2.so"
         c_module = ctypes.cdll.LoadLibrary(lib_path)
-        self.test = c_module.hi
+        self.MakeDB = c_module.MakeDB
         self.buttonOpenSeq.clicked.connect(self.getSeqPath)
         self.buttonMakeDB.clicked.connect(self.makeDB)
         self.seqName =""
+        self.buttonMakeDB.setEnabled(True)
+
     def getSeqPath(self):
         fname=QFileDialog.getExistingDirectory(self, "Open DataBase","./", QFileDialog.ShowDirsOnly| QFileDialog.DontResolveSymlinks)
         if len(fname) !=0:
             self.seqName =fname
+            print(self.seqName)
             self.labelSeqPath.setText(self.seqName)
-            self.buttonMakeDB.setEnabled(True)
+
     def makeDB(self):
-        self.test()
+        # self.MakeDB(self.seqName)
+        self.MakeDB("/media/jeon/hard/Kitti_dataset/dataset/sequences/00/image_2")
+        print("hi")
+
 
 if __name__ == "__main__":
     

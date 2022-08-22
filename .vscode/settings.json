@@ -1,0 +1,20 @@
+{
+    "files.associations": {
+        "sstream": "cpp",
+        "iostream": "cpp",
+        "array": "cpp",
+        "new": "cpp",
+        "ostream": "cpp",
+        "vector": "cpp",
+        "chrono": "cpp",
+        "*.ipp": "cpp",
+        "deque": "cpp",
+        "list": "cpp",
+        "string": "cpp",
+        "unordered_map": "cpp",
+        "string_view": "cpp",
+        "initializer_list": "cpp",
+        "bitset": "cpp",
+        "algorithm": "cpp"
+    }
+}
