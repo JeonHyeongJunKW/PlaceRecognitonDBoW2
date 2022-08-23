@@ -17,7 +17,7 @@ class loop_detector
     vector<vector<Mat>> word_datas;
     vector<vector<KeyPoint>> keypoints_datas;
     int image_size = 0;
-
+    vector<String> SeqNames;
     public:
     
     loop_detector();
@@ -26,4 +26,10 @@ class loop_detector
     void CreateVoc();//추가된 image feature들로 vocabulary를 만듭니다.
     void CreateDB();//추가된 image feature들로 vocabulary를 만듭니다.
     void AddImagesToDB();//DB에 현재이미지의 Feature를 추가합니다. 이때, 상대적인 키포인트 위치들도 저장합니다. 
+    void SaveSeqNames(vector<String> argNames);
+    int FindQuIdx(String QuName);
+    void SaveData(String DbName);
+    void LoadData(String DbName);
+    int loopDetect(int idx);
+    String getNameFromIdx(int idx);
 };

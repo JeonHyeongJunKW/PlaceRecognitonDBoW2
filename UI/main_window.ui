@@ -36,8 +36,8 @@
     </property>
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>40</y>
+      <x>230</x>
+      <y>10</y>
       <width>211</width>
       <height>25</height>
      </rect>
@@ -65,8 +65,8 @@
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>230</x>
-      <y>20</y>
+      <x>450</x>
+      <y>10</y>
       <width>101</width>
       <height>17</height>
      </rect>
@@ -81,8 +81,8 @@
     </property>
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>70</y>
+      <x>230</x>
+      <y>40</y>
       <width>211</width>
       <height>25</height>
      </rect>
@@ -120,9 +120,9 @@
    <widget class="QLabel" name="labelSeqPath">
     <property name="geometry">
      <rect>
-      <x>330</x>
-      <y>20</y>
-      <width>421</width>
+      <x>550</x>
+      <y>10</y>
+      <width>481</width>
       <height>17</height>
      </rect>
     </property>
@@ -146,21 +146,24 @@
    <widget class="QLabel" name="labelQuName">
     <property name="geometry">
      <rect>
-      <x>320</x>
-      <y>100</y>
-      <width>421</width>
+      <x>322</x>
+      <y>102</y>
+      <width>711</width>
       <height>17</height>
      </rect>
     </property>
     <property name="text">
      <string/>
     </property>
+    <property name="scaledContents">
+     <bool>false</bool>
+    </property>
    </widget>
-   <widget class="QGroupBox" name="groupBox">
+   <widget class="QGroupBox" name="boxQuery">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>140</y>
+      <y>160</y>
       <width>501</width>
       <height>411</height>
      </rect>
@@ -181,12 +184,31 @@
       <string/>
      </property>
     </widget>
+    <widget class="QLabel" name="QueryIdx">
+     <property name="geometry">
+      <rect>
+       <x>436</x>
+       <y>30</y>
+       <width>51</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="accessibleName">
+      <string>0</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
    </widget>
-   <widget class="QGroupBox" name="groupBox_2">
+   <widget class="QGroupBox" name="boxDB">
     <property name="geometry">
      <rect>
       <x>530</x>
-      <y>140</y>
+      <y>160</y>
       <width>501</width>
       <height>411</height>
      </rect>
@@ -207,6 +229,57 @@
       <string/>
      </property>
     </widget>
+    <widget class="QLabel" name="ReturnIdx">
+     <property name="geometry">
+      <rect>
+       <x>440</x>
+       <y>30</y>
+       <width>51</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="accessibleName">
+      <string>0</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QPushButton" name="buttonQueryImage">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>130</y>
+      <width>211</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Query Image</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="buttonSaveDB">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>40</y>
+      <width>211</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Save Database</string>
+    </property>
    </widget>
   </widget>
  </widget>

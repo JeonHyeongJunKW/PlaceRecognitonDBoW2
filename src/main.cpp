@@ -13,12 +13,7 @@ using namespace cv;
 using namespace DBoW2;
 
 loop_detector g_detect;
-int timing = 0;
 extern "C" {
-    void GetTime()
-    {
-        cout<<timing<<endl;
-    }
     void MakeDB(wchar_t* path)
     {
         int len = 0;
@@ -32,6 +27,7 @@ extern "C" {
         glob(folder_name,img_names,false);
         cout<<"시퀀스 길이 : "<<img_names.size()<<endl;
         sort(img_names.begin(),img_names.end());
+        g_detect.SaveSeqNames(img_names);
         system_clock::time_point start = system_clock::now();
         
         for(int i=0; i<img_names.size(); i++)
@@ -46,22 +42,61 @@ extern "C" {
         system_clock::time_point end = system_clock::now();  
         microseconds microSec = duration_cast<microseconds>(end - start);  
         cout <<"word 뽑는데 걸린시간"<<microSec.count()/1000000. << " 초\n";
-        timing =1;
 
         start = system_clock::now();
         g_detect.CreateVoc();
         end = system_clock::now();  
         microSec = duration_cast<microseconds>(end - start);  
-        cout <<"VOC만드는데 걸린시간"<<microSec.count()/1000000. << " 초\n"; 
-
-        timing =2;
+        cout <<"VOC만드는데 걸린시간"<<microSec.count()/1000000. << " 초\n";
 
         start = system_clock::now();
         g_detect.CreateDB();
         g_detect.AddImagesToDB();
         end = system_clock::now();  
         microSec = duration_cast<microseconds>(end - start);  
-        cout <<"DB만들고 더하는데 걸린시간"<<microSec.count()/1000000. << " 초\n";  
-        timing =3;
+        cout <<"DB만들고 더하는데 걸린시간"<<microSec.count()/1000000. << " 초\n";
+    }
+    int FindImageIdx(wchar_t* path)
+    {
+        int len = 0;
+        len = wcslen(path) + 1;
+        char * c_path = new char[len];
+        memset(c_path,0,len);
+        wcstombs(c_path, path, len);
+        String QueryName = String(string(c_path));
+        int idx = g_detect.FindQuIdx(QueryName);
+        return idx;
+    }
+    int FindQueryImageInDB(wchar_t* path)
+    {
+        //loop detection
+        int len = 0;
+        len = wcslen(path) + 1;
+        char * c_path = new char[len];
+        memset(c_path,0,len);
+        wcstombs(c_path, path, len);
+        String QueryName = String(string(c_path));
+        int idx = g_detect.loopDetect(g_detect.FindQuIdx(QueryName));
+        return idx;
+    }
+    void SaveDB(wchar_t* path)
+    {
+        int len = 0;
+        len = wcslen(path) + 1;
+        char * c_path = new char[len];
+        memset(c_path,0,len);
+        wcstombs(c_path, path, len);
+        String DbName = String(string(c_path));
+        g_detect.SaveData(DbName);
+    }
+    void LoadDB(wchar_t* path)
+    {
+        int len = 0;
+        len = wcslen(path) + 1;
+        char * c_path = new char[len];
+        memset(c_path,0,len);
+        wcstombs(c_path, path, len);
+        String DbName = String(string(c_path));
+        g_detect.LoadData(DbName);
     }
 }
