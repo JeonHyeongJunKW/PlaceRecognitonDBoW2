@@ -31,5 +31,10 @@ class loop_detector
     void SaveData(String DbName);
     void LoadData(String DbName);
     int loopDetect(int idx);
+    void QueryDB(int idx, QueryResults &ret);
+    void GetNormal_denom(int idx,double &denom);
     String getNameFromIdx(int idx);
+    void SortResult(QueryResults &ret,vector<Result> &sorted_ret);
+    void GroupMatch(vector<Result> &sorted_ret,int idx,double denom, vector<int> &groups, int &best_idx);
+    int GometryCheck(int idx, int last_cand_idx);
 };

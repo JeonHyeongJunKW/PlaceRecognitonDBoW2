@@ -29,15 +29,17 @@ class WindowClass(QMainWindow, form_class):
         self.buttonSelectQuery.clicked.connect(self.SelectImage)
         self.buttonQueryImage.clicked.connect(self.QueryImageIdx)
         self.buttonLoadDB.clicked.connect(self.loadDB)
-
+        
         # self.buttonMakeDB.setEnabled(True)
         # self.buttonSelectQuery.setEnabled(True)
         # self.buttonLoadDB.setEnabled(True)
-        # self.buttonSaveDB.setEnabled(True)
+        
         self.OnAllButton()
         self.seqName ="./"
         self.QueryName=""
-        
+        self.buttonSaveDB.setDisabled(True)
+        self.buttonMakeDB.setDisabled(True)
+        self.buttonQueryImage.setDisabled(True)
 
     def getSeqPath(self):
         fname=QFileDialog.getExistingDirectory(self, "Open DataBase","./", QFileDialog.ShowDirsOnly| QFileDialog.DontResolveSymlinks)
@@ -52,7 +54,7 @@ class WindowClass(QMainWindow, form_class):
         time.sleep(0.010)
         self.MakeDB(self.seqName)
         self.OnAllButton()
-    
+        self.buttonQueryImage.setDisabled(True)
     def saveDB(self):
         DBname,_ = QFileDialog.getSaveFileName(self, 'Save File')
         os.makedirs(DBname)
@@ -89,7 +91,7 @@ class WindowClass(QMainWindow, form_class):
         idx = self.FindQuIdx(self.QueryName)
         self.QueryIdx.setStyleSheet("background-color: #F01807")
         self.QueryIdx.setText(str(idx)+"번")
-        
+        self.buttonQueryImage.setEnabled(True)
         self.labelQueryImage.setPixmap(qPixmapVar)
 
     def QueryImageIdx(self):
@@ -97,14 +99,17 @@ class WindowClass(QMainWindow, form_class):
         image_names = sorted(glob.glob(self.seqName+"/*"))
         name = image_names[idx]
         idx = self.FindQuIdx(name)
-        qPixmapVar = QPixmap()
-        qPixmapVar.load(name)
-        #이미지 전처리
-        qPixmapVar=qPixmapVar.scaledToWidth(self.labelDBImage.width())
-        self.ReturnIdx.setStyleSheet("background-color: #F01807")
-        self.ReturnIdx.setText(str(idx)+"번")
-
-        self.labelDBImage.setPixmap(qPixmapVar)
+        if idx != -1:
+            qPixmapVar = QPixmap()
+            qPixmapVar.load(name)
+            #이미지 전처리
+            qPixmapVar=qPixmapVar.scaledToWidth(self.labelDBImage.width())
+            self.ReturnIdx.setStyleSheet("background-color: #F01807")
+            self.ReturnIdx.setText(str(idx)+"번")
+            self.labelDBImage.setPixmap(qPixmapVar)
+        else:
+            self.ReturnIdx.setStyleSheet("background-color: #F01807")
+            self.ReturnIdx.setText("매칭되는 장소가 없습니다.")
     
 
 
