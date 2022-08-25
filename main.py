@@ -97,9 +97,9 @@ class WindowClass(QMainWindow, form_class):
     def QueryImageIdx(self):
         idx =self.FindQueryImageInDB(self.QueryName)
         image_names = sorted(glob.glob(self.seqName+"/*"))
-        name = image_names[idx]
-        idx = self.FindQuIdx(name)
-        if idx != -1:
+        if idx >=0:
+            name = image_names[idx]
+            idx = self.FindQuIdx(name)
             qPixmapVar = QPixmap()
             qPixmapVar.load(name)
             #이미지 전처리
@@ -108,8 +108,15 @@ class WindowClass(QMainWindow, form_class):
             self.ReturnIdx.setText(str(idx)+"번")
             self.labelDBImage.setPixmap(qPixmapVar)
         else:
+            name = image_names[idx*-1]
+            idx = self.FindQuIdx(name)
+            qPixmapVar = QPixmap()
+            qPixmapVar.load(name)
+            #이미지 전처리
+            qPixmapVar=qPixmapVar.scaledToWidth(self.labelDBImage.width())
             self.ReturnIdx.setStyleSheet("background-color: #F01807")
-            self.ReturnIdx.setText("매칭되는 장소가 없습니다.")
+            self.ReturnIdx.setText("Fail")
+            self.labelDBImage.setPixmap(qPixmapVar)
     
 
 

@@ -209,7 +209,7 @@ void loop_detector::SortResult(QueryResults &ret,vector<Result> &sorted_ret)
 void loop_detector::GroupMatch(vector<Result> &sorted_ret,int idx,double denom, vector<int> &groups, int &best_idx)
 {
     int group_size = 8;
-    int query_place_bound = 20;
+    int query_place_bound = 100;
     double max_score =0;
     vector<int> max_group;
     int groups_count =0;
@@ -263,6 +263,79 @@ void loop_detector::GroupMatch(vector<Result> &sorted_ret,int idx,double denom, 
 }
 int loop_detector::GometryCheck(int idx, int last_cand_idx)
 {
-
-    return last_cand_idx;
+    if(last_cand_idx ==-1)
+    {
+        return -1*last_cand_idx;
+    }
+    FeatureVector directIdx_query =_pdb.retrieveFeatures(idx);
+    FeatureVector directIdx_candidate =_pdb.retrieveFeatures(last_cand_idx);
+    
+    //directIdx : map(node 이름, 각 feature 순서->키포인트 위치로 참조가능)
+    vector<Point2f> QueryPoints;
+    vector<Point2f> CandiPoints;
+    for(int i=0; i<directIdx_query.size(); i++)
+    {
+        auto query_node = directIdx_query[i];
+        auto candidate_node = directIdx_candidate[i];
+        if(query_node.size()==0)
+        {
+            continue;
+        }
+        if(query_node.size()==0)
+        {
+            continue;
+        }
+        Mat query_descriptor = word_datas[idx][query_node[0]];
+        for(int j=1; j<query_node.size(); j++)
+        {
+            vconcat(query_descriptor,word_datas[idx][query_node[j]],query_descriptor);
+        }
+        Mat candidate_descriptor = word_datas[last_cand_idx][candidate_node[0]];
+        for(int j=1; j<candidate_node.size(); j++)
+        {
+            vconcat(candidate_descriptor,word_datas[last_cand_idx][candidate_node[j]],candidate_descriptor);
+        }
+        vector<DMatch> matches;
+        Ptr<DescriptorMatcher> _match_OrbMatchHandle = BFMatcher::create(NORM_HAMMING,true);
+        _match_OrbMatchHandle->match(query_descriptor,candidate_descriptor,matches);
+        sort(matches.begin(),matches.end());
+        int match_size =matches.size() > 100? 100: matches.size();
+        for(int i=0; i<match_size; i++)
+        {
+            Point2f query_pt = keypoints_datas[idx][query_node[matches[i].queryIdx]].pt;
+            Point2f candi_pt = keypoints_datas[last_cand_idx][candidate_node[matches[i].trainIdx]].pt;
+            QueryPoints.push_back(query_pt);
+            CandiPoints.push_back(candi_pt);
+        }
+    }
+    Mat fundMat = findFundamentalMat(QueryPoints,CandiPoints);
+    fundMat.convertTo(fundMat,CV_64FC1);
+    vector<Point3f> homo_QueryPoints;
+    vector<Point3f> homo_CandiPoints;
+    convertPointsToHomogeneous(QueryPoints,homo_QueryPoints);
+    convertPointsToHomogeneous(CandiPoints,homo_CandiPoints);
+    int max_in =5;
+    int inlier_count = 0;
+    for(int i=0; i<QueryPoints.size(); i++)
+    {
+         Mat first_point;
+        Mat(homo_QueryPoints[i]).convertTo(first_point,CV_64FC1);
+        Mat second_point;
+        Mat(homo_CandiPoints[i]).convertTo(second_point,CV_64FC1);
+        double dist = sampsonDistance(first_point,second_point,fundMat);
+        if(dist<max_in)
+        {
+            inlier_count++;
+        }
+    }
+    if(inlier_count*100./QueryPoints.size()> 50)
+    {
+        cout<<"일치율 : "<<inlier_count*100./QueryPoints.size()<<"%"<<endl;
+        return last_cand_idx;
+    }
+    else
+    {
+        cout<<"일치율 : "<<inlier_count*100./QueryPoints.size()<<"%"<<endl;
+        return -1*last_cand_idx;
+    }
 }
