@@ -21,3 +21,11 @@ mkdir build
 ```
 sh test.sh
 ```
+
+### 구현 모습
+
+: Database내에서 선택한 query 이미지와 같은 유사한 장소를 찾아내서, 오른쪽의 이미지가 같은 장소로 바뀝니다. 
+
+유사도가 높으면 Database에서 인덱스를 출력하고, 낮으면 "fail"을 출력합니다.
+
+<img src="./images/PR_video.gif"  width="500"/>

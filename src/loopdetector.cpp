@@ -328,7 +328,7 @@ int loop_detector::GometryCheck(int idx, int last_cand_idx)
             inlier_count++;
         }
     }
-    if(inlier_count*100./QueryPoints.size()> 50)
+    if(inlier_count*100./QueryPoints.size()> 40)
     {
         cout<<"일치율 : "<<inlier_count*100./QueryPoints.size()<<"%"<<endl;
         return last_cand_idx;
