@@ -28,4 +28,4 @@ sh test.sh
 
 유사도가 높으면 Database에서 인덱스를 출력하고, 낮으면 "fail"을 출력합니다.
 
-<img src="./images/PR_video.gif"  width="500"/>
+<p align="center"><img src="./images/PR_video.gif"  width="500"/></p>
